@@ -33,8 +33,8 @@ function Ball(x, y, radius) {
   this.x = x;
   this.y = y;
   this.radius = radius;
-  this.width = radius * 2; // Add this line
-  this.height = radius * 2; // Add this line
+  this.width = radius * 2;
+  this.height = radius * 2;
   this.speedX = 5;
   this.speedY = 5;
   this.draw = function () {
@@ -46,7 +46,6 @@ function Ball(x, y, radius) {
   };
 }
 
-
 function updatePaddles() {
   playerPaddle.y = Math.min(Math.max(playerPaddle.y + playerPaddle.speed, 0), canvas.height - playerPaddle.height);
   if (ball.y < computerPaddle.y + computerPaddle.height / 2) {
@@ -57,30 +56,29 @@ function updatePaddles() {
   computerPaddle.y = Math.min(Math.max(computerPaddle.y + computerPaddle.speed, 0), canvas.height - computerPaddle.height);
 }
 
-//reset the game state, player and computer scores
 function resetGame() {
   playerScore = 0;
   computerScore = 0;
   initGame();
 }
 
-
-
 function updateBall() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
 
   // Check for collision with top and bottom borders
-  if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) { // Updated this line
+  if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
     ball.speedY = -ball.speedY;
   }
 
+  // Check for collision with paddles
   if (ball.x <= playerPaddle.x + playerPaddle.width && ball.y + ball.height >= playerPaddle.y && ball.y <= playerPaddle.y + playerPaddle.height) {
     ball.speedX = -ball.speedX;
   } else if (ball.x + ball.width >= computerPaddle.x && ball.y + ball.height >= computerPaddle.y && ball.y <= computerPaddle.y + computerPaddle.height) {
     ball.speedX = -ball.speedX;
   }
 
+  // Check for scoring
   if (ball.x < 0) {
     computerScore++;
     ball.x = canvas.width / 2;
@@ -95,6 +93,7 @@ function updateBall() {
     ball.speedY = (Math.random() * 4) - 2;
   }
 }
+
 
 let lastTime;
 function gameLoop(timestamp) {
