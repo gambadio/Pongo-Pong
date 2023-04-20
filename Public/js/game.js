@@ -47,7 +47,7 @@ function Ball(x, y, radius) {
 }
 
 function updatePaddles() {
-  playerPaddle.y = Math.min(Math.max(playerPaddle.y + playerPaddle.speed, 0), canvas.height - playerPaddle.height);
+
   if (ball.y < computerPaddle.y + computerPaddle.height / 2) {
     computerPaddle.speed = -5;
   } else {
@@ -158,13 +158,13 @@ function gameLoop(timestamp) {
   requestAnimationFrame(gameLoop);
 }
   
-  canvas.addEventListener("mousemove", (e) => {
-    if (gameState === STATE_GAME) {
-    let canvasRect = canvas.getBoundingClientRect();
-    let mouseY = e.clientY - canvasRect.top;
-    playerPaddle.speed = mouseY - (playerPaddle.y + playerPaddle.height / 2);
-    }
-  });
+canvas.addEventListener("mousemove", (e) => {
+  if (gameState === STATE_GAME) {
+      let canvasRect = canvas.getBoundingClientRect();
+      let mouseY = e.clientY - canvasRect.top;
+      playerPaddle.y = mouseY - playerPaddle.height / 2;
+  }
+});
   
   document.addEventListener("keydown", (e) => {
     if (gameState === STATE_MENU) {
