@@ -74,8 +74,12 @@ function updateBall() {
   // Check for collision with paddles
   if (ball.x <= playerPaddle.x + playerPaddle.width && ball.y + ball.height >= playerPaddle.y && ball.y <= playerPaddle.y + playerPaddle.height) {
     ball.speedX = -ball.speedX;
+    // Change the ball's speed depending on the paddle's speed
+    ball.speedY += playerPaddle.speed;
   } else if (ball.x + ball.width >= computerPaddle.x && ball.y + ball.height >= computerPaddle.y && ball.y <= computerPaddle.y + computerPaddle.height) {
     ball.speedX = -ball.speedX;
+    // Change the ball's speed depending on the paddle's speed
+    ball.speedY += computerPaddle.speed;
   }
 
   // Check for scoring
