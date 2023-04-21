@@ -12,6 +12,18 @@ let playerPaddle, computerPaddle, ball;
 let playerScore = 0;
 let computerScore = 0;
 let playerName ="";
+let highScores = [];
+
+
+//add the new score
+function addHighScore(name, score) {
+  highScores.push({ name, score });
+  highScores.sort((a, b) => b.score - a.score);
+  if (highScores.length > 10) {
+    highScores.pop();
+  }
+}
+
 
 function initGame() {
   playerPaddle = new Paddle(10, canvas.height / 2 - 50, 10, 100);
@@ -166,9 +178,13 @@ function gameLoop(timestamp) {
       case STATE_HIGHSCORES:
         ctx.font = "30px Arial";
         ctx.fillStyle = "white";
-        ctx.fillText("High Scores", 340, canvas.height / 2 - 50);
+        ctx.fillText("High Scores", 340, 50);
+        for (let i = 0; i < highScores.length; i++) {
+          ctx.fillText(`${i + 1}. ${highScores[i].name} - ${highScores[i].score}`, 280, 100 + i * 30);
+        }
         ctx.fillText("Press ESC to return to the main menu", 190, canvas.height / 2 + 50);
         break;
+      ;
     case STATE_ENDGAME:
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
@@ -221,7 +237,7 @@ document.addEventListener("keydown", (e) => {
   } else if (gameState === STATE_ENTER_NAME) {
     if (e.code === "Enter") {
       // Submit score and return to the main menu
-      // Add score submission logic here
+      addHighScore(playerName, playerScore);
       resetGame();
       gameState = STATE_MENU;
     } else if (/^Key[A-Za-z]$/.test(e.code)) {
