@@ -177,63 +177,61 @@ function gameLoop(timestamp) {
     case STATE_MENU:
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText("Press SPACE to start the game", 170, canvas.height / 2);
-      ctx.fillText("Press H to view High Scores", 230, canvas.height / 2 + 50);
+      let startGameText = "Press SPACE to start the game";
+      let viewHighScoresText = "Press H to view High Scores";
+      let startGameTextWidth = ctx.measureText(startGameText).width;
+      let viewHighScoresTextWidth = ctx.measureText(viewHighScoresText).width;
+      ctx.fillText(startGameText, (canvas.width - startGameTextWidth) / 2, canvas.height / 2);
+      ctx.fillText(viewHighScoresText, (canvas.width - viewHighScoresTextWidth) / 2, canvas.height / 2 + 50);
       break;
-    case STATE_GAME:
-      drawDashedLine();
-      playerPaddle.draw();
-      computerPaddle.draw();
-      ctx.beginPath();
-      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
-      ctx.fill();
-      ctx.closePath();
-      updatePaddles();
-      updateBall();
-
+    // ...
+    case STATE_HIGHSCORES:
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText(playerScore, canvas.width / 4, 50);
-      ctx.fillText(computerScore, (3 * canvas.width) / 4, 50);
+      let highScoresText = "High Scores";
+      let returnToMenuText = "Press ESC to return to the main menu";
+      let highScoresTextWidth = ctx.measureText(highScoresText).width;
+      let returnToMenuTextWidth = ctx.measureText(returnToMenuText).width;
+      ctx.fillText(highScoresText, (canvas.width - highScoresTextWidth) / 2, 50);
 
-      if (computerScore >= 5) {
-        gameState = STATE_ENDGAME;
+      highScores.forEach((score, index) => {
+        ctx.fillText(`${index + 1}. ${score.name} - ${score.score}`, (canvas.width - highScoresTextWidth) / 2, 100 + index * 30);
+      });
+
+      ctx.fillText(returnToMenuText, (canvas.width - returnToMenuTextWidth) / 2, canvas.height / 2 + 50);
+
+      if (highScores.length === 0) {
+        fetchHighScores().then((scores) => {
+          highScores = scores;
+        });
       }
       break;
-      case STATE_HIGHSCORES:
-        ctx.font = "30px Arial";
-        ctx.fillStyle = "white";
-        ctx.fillText("High Scores", 340, 50);
-        
-        highScores.forEach((score, index) => {
-          ctx.fillText(`${index + 1}. ${score.name} - ${score.score}`, 240, 100 + index * 30);
-        });
-        
-        ctx.fillText("Press ESC to return to the main menu", 190, canvas.height / 2 + 50);
-        
-        if (highScores.length === 0) {
-          fetchHighScores().then((scores) => {
-            highScores = scores;
-          });
-        }
-        break;
-      
+
     case STATE_ENDGAME:
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText("Game Over", 340, canvas.height / 2 - 50);
-      ctx.fillText("Press Y to submit your score", 220, canvas.height / 2);
-      ctx.fillText("Press N to return to the main menu", 190, canvas.height / 2 + 50);
+      let gameOverText = "Game Over";
+      let submitScoreText = "Press Y to submit your score";
+      let returnText = "Press N to return to the main menu";
+      let gameOverTextWidth = ctx.measureText(gameOverText).width;
+      let submitScoreTextWidth = ctx.measureText(submitScoreText).width;
+      let returnTextWidth = ctx.measureText(returnText).width;
+      ctx.fillText(gameOverText, (canvas.width - gameOverTextWidth) / 2, canvas.height / 2 - 50);
+      ctx.fillText(submitScoreText, (canvas.width - submitScoreTextWidth) / 2, canvas.height / 2);
+      ctx.fillText(returnText, (canvas.width - returnTextWidth) / 2, canvas.height / 2 + 50);
       break;
-      case STATE_ENTER_NAME:
-        ctx.font = "30px Arial";
-        ctx.fillStyle = "white";
-        ctx.fillText("Enter Your Name:", 280, canvas.height / 2 - 50);
-        ctx.fillText(playerName, canvas.width / 2 - (playerName.length * 8), canvas.height / 2);
-        ctx.fillText("Press ENTER to submit", 250, canvas.height / 2 + 50);
-        break;
-          
+    case STATE_ENTER_NAME:
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "white";
+      let enterNameText = "Enter Your Name:";
+      let submitText = "Press ENTER to submit";
+      let enterNameTextWidth = ctx.measureText(enterNameText).width;
+      let submitTextWidth = ctx.measureText(submitText).width;
+      ctx.fillText(enterNameText, (canvas.width - enterNameTextWidth) / 2, canvas.height / 2 - 50);
+      ctx.fillText(playerName, canvas.width / 2 - (playerName.length * 8), canvas.height / 2);
+      ctx.fillText(submitText, (canvas.width - submitTextWidth) / 2, canvas.height / 2 + 50);
+      break;
+
     default:
       break;
   }
