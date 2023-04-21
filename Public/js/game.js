@@ -61,6 +61,19 @@ function resetGame() {
   computerScore = 0;
   initGame();
 }
+<<<<<<< HEAD
+=======
+// dotted lines in the middle
+function drawDashedLine() {
+  ctx.beginPath();
+  ctx.setLineDash([10, 10]);
+  ctx.moveTo(canvas.width / 2, 0);
+  ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.strokeStyle = "white";
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+>>>>>>> 91d6f8233705a61a23935948a0987eb742396f09
 
 function updateBall() {
   ball.x += ball.speedX;
