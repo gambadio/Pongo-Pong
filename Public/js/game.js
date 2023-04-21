@@ -53,13 +53,23 @@ function updatePaddles() {
   } else {
     computerPaddle.speed = 5;
   }
-  computerPaddle.y = Math.min(Math.max(computerPaddle.y + computerPaddle.speed, 0), canvas.height - computerPaddle.height);
+  playerPaddle.y = Math.min(Math.max(playerPaddle.y, 0), canvas.height - playerPaddle.height);
 }
 
 function resetGame() {
   playerScore = 0;
   computerScore = 0;
   initGame();
+}
+
+function drawDashedLine() {
+  ctx.beginPath();
+  ctx.setLineDash([10, 10]);
+  ctx.moveTo(canvas.width / 2, 0);
+  ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.strokeStyle = "white";
+  ctx.stroke();
+  ctx.setLineDash([]);
 }
 
 function updateBall() {
@@ -123,6 +133,7 @@ function gameLoop(timestamp) {
       ctx.fillText("Press H to view High Scores", 230, canvas.height / 2 + 50);
       break;
     case STATE_GAME:
+      drawDashedLine();
       playerPaddle.draw();
       computerPaddle.draw();
       ctx.beginPath();
