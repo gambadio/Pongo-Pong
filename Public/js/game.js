@@ -15,14 +15,15 @@ let playerName ="";
 let highScores = [];
 
 
-//add the new score
-function addHighScore(name, score) {
+//add the new score local
+function addHighScoreLocal(name, score) {
   highScores.push({ name, score });
   highScores.sort((a, b) => b.score - a.score);
   if (highScores.length > 10) {
     highScores.pop();
   }
 }
+
 
 
 function initGame() {
@@ -207,28 +208,28 @@ function gameLoop(timestamp) {
       break;
     // ...
     case STATE_HIGHSCORES:
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "white";
-      let highScoresText = "High Scores";
-      let returnToMenuText = "Press ESC to return to the main menu";
-      let highScoresTextWidth = ctx.measureText(highScoresText).width;
-      let returnToMenuTextWidth = ctx.measureText(returnToMenuText).width;
-      ctx.fillText(highScoresText, (canvas.width - highScoresTextWidth) / 2, 50);
-    
-      highScores.forEach((score, index) => {
-        let scoreText = `${index + 1}. ${score.name} - ${score.score}`;
-        let scoreTextWidth = ctx.measureText(scoreText).width;
-        ctx.fillText(scoreText, (canvas.width - scoreTextWidth) / 2, 100 + index * 30);
-      });
-    
-      ctx.fillText(returnToMenuText, (canvas.width - returnToMenuTextWidth) / 2, canvas.height / 2 + 50);
-    
-      if (highScores.length === 0) {
-        fetchHighScores().then((scores) => {
-          highScores = scores;
-        });
-      }
-      break;
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "white";
+  let highScoresText = "High Scores";
+  let returnToMenuText = "Press ESC to return to the main menu";
+  let highScoresTextWidth = ctx.measureText(highScoresText).width;
+  let returnToMenuTextWidth = ctx.measureText(returnToMenuText).width;
+  ctx.fillText(highScoresText, (canvas.width - highScoresTextWidth) / 2, 50);
+
+  highScores.forEach((score, index) => {
+    let scoreText = `${index + 1}. ${score.name} - ${score.score}`;
+    let scoreTextWidth = ctx.measureText(scoreText).width;
+    ctx.fillText(scoreText, (canvas.width - scoreTextWidth) / 2, 100 + index * 30);
+  });
+
+  ctx.fillText(returnToMenuText, (canvas.width - returnToMenuTextWidth) / 2, canvas.height / 2 + 50);
+
+  if (highScores.length === 0) {
+    fetchHighScores().then((scores) => {
+      highScores = scores;
+    });
+  }
+  break;
 
     case STATE_ENDGAME:
       ctx.font = "30px Arial";
@@ -293,8 +294,8 @@ document.addEventListener("keydown", (e) => {
     }
   } else if (gameState === STATE_ENTER_NAME) {
     if (e.code === "Enter") {
-      // Submit score and return to the main menu
-      addHighScore(playerName, playerScore);
+      addHighScoreLocal(playerName, playerScore); // Call the local function here
+      addHighScore(playerName, playerScore); // Call the server-side function here
       resetGame();
       gameState = STATE_MENU;
     } else if (/^Key[A-Za-z]$/.test(e.code)) {
@@ -306,11 +307,7 @@ document.addEventListener("keydown", (e) => {
     } else if (e.code === "Backspace") {
       playerName = playerName.slice(0, -1);
     }
-    else if (e.code === "Enter") {
-      addHighScore(playerName, playerScore); // Call the addHighScore function here
-      resetGame();
-      gameState = STATE_MENU;
-    } 
+    
   }
 });
 
