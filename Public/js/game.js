@@ -176,6 +176,14 @@ function gameLoop(timestamp) {
       ctx.fillText("Press Y to submit your score", 220, canvas.height / 2);
       ctx.fillText("Press N to return to the main menu", 190, canvas.height / 2 + 50);
       break;
+      case STATE_ENTER_NAME:
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("Enter Your Name:", 280, canvas.height / 2 - 50);
+        ctx.fillText(playerName, canvas.width / 2 - (playerName.length * 8), canvas.height / 2);
+        ctx.fillText("Press ENTER to submit", 250, canvas.height / 2 + 50);
+        break;
+          
     default:
       break;
   }
