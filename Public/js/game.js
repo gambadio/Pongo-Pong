@@ -193,13 +193,15 @@ function gameLoop(timestamp) {
       let highScoresTextWidth = ctx.measureText(highScoresText).width;
       let returnToMenuTextWidth = ctx.measureText(returnToMenuText).width;
       ctx.fillText(highScoresText, (canvas.width - highScoresTextWidth) / 2, 50);
-
+    
       highScores.forEach((score, index) => {
-        ctx.fillText(`${index + 1}. ${score.name} - ${score.score}`, (canvas.width - highScoresTextWidth) / 2, 100 + index * 30);
+        let scoreText = `${index + 1}. ${score.name} - ${score.score}`;
+        let scoreTextWidth = ctx.measureText(scoreText).width;
+        ctx.fillText(scoreText, (canvas.width - scoreTextWidth) / 2, 100 + index * 30);
       });
-
+    
       ctx.fillText(returnToMenuText, (canvas.width - returnToMenuTextWidth) / 2, canvas.height / 2 + 50);
-
+    
       if (highScores.length === 0) {
         fetchHighScores().then((scores) => {
           highScores = scores;
