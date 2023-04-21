@@ -61,7 +61,7 @@ function resetGame() {
   computerScore = 0;
   initGame();
 }
-
+// dotted lines in the middle
 function drawDashedLine() {
   ctx.beginPath();
   ctx.setLineDash([10, 10]);
@@ -71,7 +71,7 @@ function drawDashedLine() {
   ctx.stroke();
   ctx.setLineDash([]);
 }
-//test
+
 function updateBall() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
