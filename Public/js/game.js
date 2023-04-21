@@ -71,7 +71,7 @@ function drawDashedLine() {
   ctx.stroke();
   ctx.setLineDash([]);
 }
-
+//test
 function updateBall() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
