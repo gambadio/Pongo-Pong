@@ -1,15 +1,17 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
+const STATE_ENTER_NAME = 4;
 const STATE_MENU = 0;
 const STATE_GAME = 1;
 const STATE_HIGHSCORES = 2;
 const STATE_ENDGAME = 3;
+
 let gameState = STATE_MENU;
 
 let playerPaddle, computerPaddle, ball;
 let playerScore = 0;
 let computerScore = 0;
+let playerName ="";
 
 function initGame() {
   playerPaddle = new Paddle(10, canvas.height / 2 - 50, 10, 100);
@@ -70,6 +72,14 @@ function drawDashedLine() {
   ctx.strokeStyle = "white";
   ctx.stroke();
   ctx.setLineDash([]);
+}
+
+function drawEnterNameScreen() {
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "white";
+  ctx.fillText("Enter your name:", 270, canvas.height / 2 - 50);
+  ctx.fillText(playerName + "_", 350, canvas.height / 2);
+  ctx.fillText("Press ENTER to submit", 220, canvas.height / 2 + 50);
 }
 
 function updateBall() {
@@ -181,28 +191,43 @@ canvas.addEventListener("mousemove", (e) => {
   }
 });
   
-  document.addEventListener("keydown", (e) => {
-    if (gameState === STATE_MENU) {
-      if (e.code === "Space") {
-        gameState = STATE_GAME;
-      }
-      if (e.code === "KeyH") {
-        gameState = STATE_HIGHSCORES;
-      }
-    } else if (gameState === STATE_HIGHSCORES && e.code === "Escape") {
-      gameState = STATE_MENU;
-    } else if (gameState === STATE_ENDGAME) {
-      if (e.code === "KeyY") {
-        // Submit score and return to the main menu
-        resetGame();
-        gameState = STATE_MENU;
-      } else if (e.code === "KeyN") {
-        // Return to the main menu
-        resetGame();
-        gameState = STATE_MENU;
-      }
+document.addEventListener("keydown", (e) => {
+  if (gameState === STATE_MENU) {
+    if (e.code === "Space") {
+      gameState = STATE_GAME;
     }
-  });
+    if (e.code === "KeyH") {
+      gameState = STATE_HIGHSCORES;
+    }
+  } else if (gameState === STATE_HIGHSCORES && e.code === "Escape") {
+    gameState = STATE_MENU;
+  } else if (gameState === STATE_ENDGAME) {
+    if (e.code === "KeyY") {
+      // Switch to the enter name state
+      gameState = STATE_ENTER_NAME;
+    } else if (e.code === "KeyN") {
+      // Return to the main menu
+      resetGame();
+      gameState = STATE_MENU;
+    }
+  } else if (gameState === STATE_ENTER_NAME) {
+    if (e.code === "Enter") {
+      // Submit score and return to the main menu
+      // Add score submission logic here
+      resetGame();
+      gameState = STATE_MENU;
+    } else if (/^Key[A-Za-z]$/.test(e.code)) {
+      // Allow the user to enter their name using the A-Z keys
+      playerName += e.code.slice(3).toUpperCase();
+      if (playerName.length > 10) {
+        playerName = playerName.slice(0, 10);
+      }
+    } else if (e.code === "Backspace") {
+      playerName = playerName.slice(0, -1);
+    }
+  }
+});
+
   
   
   initGame(); // Add this line to initialize the game objects
