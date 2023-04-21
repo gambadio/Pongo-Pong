@@ -184,6 +184,27 @@ function gameLoop(timestamp) {
       ctx.fillText(startGameText, (canvas.width - startGameTextWidth) / 2, canvas.height / 2);
       ctx.fillText(viewHighScoresText, (canvas.width - viewHighScoresTextWidth) / 2, canvas.height / 2 + 50);
       break;
+      case STATE_GAME:
+      drawDashedLine();
+      playerPaddle.draw();
+      computerPaddle.draw();
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "white";
+      ctx.fill();
+      ctx.closePath();
+      updatePaddles();
+      updateBall();
+
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText(playerScore, canvas.width / 4, 50);
+      ctx.fillText(computerScore, (3 * canvas.width) / 4, 50);
+
+      if (computerScore >= 5) {
+        gameState = STATE_ENDGAME;
+      }
+      break;
     // ...
     case STATE_HIGHSCORES:
       ctx.font = "30px Arial";
