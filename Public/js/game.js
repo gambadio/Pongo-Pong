@@ -151,6 +151,12 @@ async function addHighScore(name, score) {
   }
 }
 
+//fetch highscores
+async function fetchHighScores() {
+  const response = await fetch('/api/highscores');
+  return response.json();
+}
+
 let lastTime;
 function gameLoop(timestamp) {
   if (!lastTime) {
@@ -199,12 +205,20 @@ function gameLoop(timestamp) {
         ctx.font = "30px Arial";
         ctx.fillStyle = "white";
         ctx.fillText("High Scores", 340, 50);
-        for (let i = 0; i < highScores.length; i++) {
-          ctx.fillText(`${i + 1}. ${highScores[i].name} - ${highScores[i].score}`, 280, 100 + i * 30);
-        }
+        
+        highScores.forEach((score, index) => {
+          ctx.fillText(`${index + 1}. ${score.name} - ${score.score}`, 240, 100 + index * 30);
+        });
+        
         ctx.fillText("Press ESC to return to the main menu", 190, canvas.height / 2 + 50);
+        
+        if (highScores.length === 0) {
+          fetchHighScores().then((scores) => {
+            highScores = scores;
+          });
+        }
         break;
-      ;
+      
     case STATE_ENDGAME:
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
