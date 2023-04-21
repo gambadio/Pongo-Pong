@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ponggame'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F84DFE31991E4E57842D0CF1831FC2E8 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D85295F1E73647238BA3E154EF8024ED }}
           package: .
