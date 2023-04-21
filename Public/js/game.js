@@ -130,6 +130,26 @@ function updateBall() {
   }
 }
 
+// send POST request with the player's name
+//A POST request is a way of sending data to a web server using HTTP.
+// It is often used when you want to create or update something on the server, such as a file or a form.
+async function submitScore(name, score) {
+  const response = await fetch('/api/highscores', {
+    method: 'POST',
+    body: JSON.stringify({ name, score }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return response.json();
+}
+
+async function addHighScore(name, score) {
+  try {
+    const result = await submitScore(name, score);
+    console.log('High score submitted:', result);
+  } catch (error) {
+    console.error('Error submitting high score:', error);
+  }
+}
 
 let lastTime;
 function gameLoop(timestamp) {
@@ -206,6 +226,8 @@ function gameLoop(timestamp) {
 
   requestAnimationFrame(gameLoop);
 }
+
+
   
 canvas.addEventListener("mousemove", (e) => {
   if (gameState === STATE_GAME) {
@@ -249,6 +271,11 @@ document.addEventListener("keydown", (e) => {
     } else if (e.code === "Backspace") {
       playerName = playerName.slice(0, -1);
     }
+    else if (e.code === "Enter") {
+      addHighScore(playerName, playerScore); // Call the addHighScore function here
+      resetGame();
+      gameState = STATE_MENU;
+    } 
   }
 });
 
