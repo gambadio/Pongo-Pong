@@ -7,7 +7,7 @@ app.use(express.static('public'));
 app.use(express.static('views'));
 app.use(express.json());
 
-const uri = "mongodb+srv://ricardokupper:bongomongo@pong-game.krmfm2k.mongodb.net/pong-game?retryWrites=true&w=majority";
+const uri = ""; //cloud mongo db link with pw
 
 
 const client = new MongoClient(uri, { useUnifiedTopology: true });
